@@ -1,0 +1,70 @@
+<div class="row m-3">
+  <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1">
+    <div class="card bg-light mb-3">
+      <div class="card-header text-center">Agregar Producto</div>
+      <div class="card-body">
+        <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" class="form-control" formControlName="titulo" placeholder="Introduce el título">
+            @if (titulo.invalid && titulo.touched){
+              <p class="form-error">El titulo es requerido</p>
+            }
+          </div>
+          <div class="form-group mt-2">
+            <label for="ubicacion">Ubicación</label>
+            <input type="text" id="ubicacion" class="form-control" formControlName="ubicacion" placeholder="Ingrese la ubicación">
+            @if (ubicacion.invalid && ubicacion.touched){
+              <p class="form-error">La ubicacion es requerida</p>
+            }
+          </div>
+          <div class="form-group mt-2">
+            <label class="mx-2" for="fechaInicio">Fecha de Inicio</label>
+            <input matInput [matDatepicker]="picker1" formControlName="fechaInicio" placeholder="Ingrese la fecha de inicio">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            @if (fechaInicio.invalid && fechaInicio.touched){
+              <p class="form-error">La fecha es requerida</p>
+            }
+          </div>
+          <div class="form-group mt-2">
+            <label class="mx-2" for="horaInicio">Hora de Inicio</label>
+            <input matInput [ngxTimepicker]="startTime" formControlName="horaInicio" placeholder="Ingrese la hora de inicio" readonly>
+            <ngx-material-timepicker #startTime></ngx-material-timepicker>
+            @if (horaInicio.invalid && horaInicio.touched){
+              <p class="form-error">La hora es requerida</p>
+            }
+          </div>
+          <div class="form-group mt-2">
+            <label class="mx-2" for="fechaFin">Fecha de Fin</label>
+            <input matInput [matDatepicker]="picker2" formControlName="fechaFin" placeholder="Ingrese la fecha de fin">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </div>
+          <div class="form-group mt-2">
+            <label class="mx-2" for="horaFin">Hora de Fin</label>
+            <input matInput [ngxTimepicker]="endTime" formControlName="horaFin" placeholder="Ingrese la hora de fin" readonly>
+            <ngx-material-timepicker #endTime></ngx-material-timepicker>
+          </div>
+          <div class="form-group mt-2">
+            <label for="costo">Costo</label>
+            <input type="number" id="costo" class="form-control" formControlName="costo" placeholder="Ingrese el costo">
+            @if (costo.invalid && costo.touched){
+              <p class="form-error">El costo es requerida</p>
+            }
+          </div>
+          <div class="form-group mt-2">
+            <label for="comentarios">Comentarios</label>
+            <input type="text" id="comentarios" class="form-control" formControlName="comentarios" placeholder="Ingrese comentarios">
+          </div>
+          <div class="row mt-2">
+            <div class="col text-center">
+              <button type="submit" class="btn btn-success">Aceptar</button>
+              <button routerLink="/" type="button" class="btn btn-secondary mx-2">Volver</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

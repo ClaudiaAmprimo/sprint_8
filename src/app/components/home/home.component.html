@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="title">
+    <h4>CRUD Database Events</h4>
+    <button type="button" class="btn btn-secondary" routerLink="/add">Agregar Producto</button>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Titulo</th>
+        <th scope="col">Ubicacion</th>
+        <th scope="col">Fecha Inicio</th>
+        <th scope="col">Fecha Fin</th>
+        <th scope="col">Costo</th>
+        <th scope="col">Comentarios</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (event of listEvents; track event){
+        <tr class="table-light">
+          <td scope="row">{{event.titulo}}</td>
+          <td>{{event.ubicacion}}</td>
+          <td>{{event.fecha_inicio | date:'EEE MMM dd yyyy'}}</td>
+          <td>{{event.fecha_fin | date:'EEE MMM dd yyyy'}}</td>
+          <td>{{event.costo}}</td>
+          <td>{{event.comentarios}}</td>
+          <td>
+            <button routerLink="/edit/{{event.id}}" type="button" class="btn btn-success btn-sm ms-2">Edit</button>
+            <button type="button" class="btn btn-danger btn-sm ms-2">Delete</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
