@@ -16,6 +16,6 @@ export class EventService {
   }
 
   getListEvents(): Observable<Event[]>{
-    return this.http.get<Event[]>(`${this.baseUrl}${this.eventUrl}`)
+    return this.http.get<Event[]>(`${this.baseUrl}${this.eventUrl}`, { withCredentials: true });
   }
 }
