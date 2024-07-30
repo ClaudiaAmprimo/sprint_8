@@ -10,27 +10,16 @@ import { ProgressBarComponent } from "../../shared/progress-bar/progress-bar.com
   standalone: true,
   imports: [CommonModule, RouterLink, ProgressBarComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   listEvents: Event[] = [];
-  loading: boolean = false
-  //   {
-  //     id: 1,
-  //     titulo: "pasaje a peru",
-  //     ubicacion: "barcelona",
-  //     fecha_inicio: new Date('2025-01-01'),
-  //     fecha_fin: new Date('2025-01-10'),
-  //     costo: 850,
-  //     comentarios: "vacaciones"
-  //   }
-  // ]
+  loading: boolean = false;
 
-  constructor(private eventService: EventService){
-  }
+  constructor(private eventService: EventService) { }
 
   ngOnInit(): void {
-    this.getListEvents()
+    this.getListEvents();
   }
 
   getListEvents() {
@@ -43,15 +32,22 @@ export class HomeComponent implements OnInit {
       },
       error: error => {
         console.error('Error al obtener los eventos:', error);
+        this.loading = false;
       }
     });
   }
 
-  deleteEvent(id_event: number){
+  deleteEvent(id_event: number) {
     this.loading = true;
-    this.eventService.deleteEvent(id_event).subscribe(() => {
-      console.log(id_event);
-      this.getListEvents();
-    })
+    this.eventService.deleteEvent(id_event).subscribe({
+      next: () => {
+        console.log(id_event);
+        this.getListEvents();
+      },
+      error: error => {
+        console.error('Error al eliminar el evento:', error);
+        this.loading = false;
+      }
+    });
   }
 }
