@@ -21,12 +21,12 @@
         <tr class="table-light">
           <td scope="row">{{event.titulo}}</td>
           <td>{{event.ubicacion}}</td>
-          <td>{{event.fecha_inicio | date:'EEE MMM dd yyyy'}}</td>
-          <td>{{event.fecha_fin | date:'EEE MMM dd yyyy'}}</td>
+          <td>{{event.fecha_inicio | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+          <td>{{event.fecha_fin | date:'yyyy-MM-dd HH:mm:ss'}}</td>
           <td>{{event.costo}}</td>
           <td>{{event.comentarios}}</td>
           <td>
-            <button routerLink="/edit/{{event.id}}" type="button" class="btn btn-success btn-sm ms-2">Edit</button>
+            <button routerLink="/edit/{{event.id_event}}" type="button" class="btn btn-success btn-sm ms-2">Edit</button>
             <button type="button" class="btn btn-danger btn-sm ms-2">Delete</button>
           </td>
         </tr>

@@ -12,17 +12,17 @@ import { EventService } from '../../services/event.service';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-  listEvents: Event[] = [
-    {
-      id: 1,
-      titulo: "pasaje a peru",
-      ubicacion: "barcelona",
-      fecha_inicio: new Date('2025-01-01'),
-      fecha_fin: new Date('2025-01-10'),
-      costo: 850,
-      comentarios: "vacaciones"
-    }
-  ]
+  listEvents: Event[] = [];
+  //   {
+  //     id: 1,
+  //     titulo: "pasaje a peru",
+  //     ubicacion: "barcelona",
+  //     fecha_inicio: new Date('2025-01-01'),
+  //     fecha_fin: new Date('2025-01-10'),
+  //     costo: 850,
+  //     comentarios: "vacaciones"
+  //   }
+  // ]
 
   constructor(private eventService: EventService){
   }
@@ -31,10 +31,22 @@ export class HomeComponent implements OnInit {
     this.getListEvents()
   }
 
-  getListEvents(){
-    this.eventService.getListEvents().subscribe((data) => {
-      console.log(data)
+  // getListEvents(){
+  //   this.eventService.getListEvents().subscribe((data) => {
+  //     console.log(data)
 
-    })
+  //   })
+  // }
+
+  getListEvents() {
+    this.eventService.getListEvents().subscribe({
+      next: data => {
+        this.listEvents = data;
+        console.log(data);
+      },
+      error: error => {
+        console.error('Error al obtener los eventos:', error);
+      }
+    });
   }
 }
