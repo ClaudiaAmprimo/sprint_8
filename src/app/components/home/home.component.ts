@@ -3,16 +3,18 @@ import { Event } from '../../interfaces/event';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { EventService } from '../../services/event.service';
+import { ProgressBarComponent } from "../../shared/progress-bar/progress-bar.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ProgressBarComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
   listEvents: Event[] = [];
+  loading: boolean = false
   //   {
   //     id: 1,
   //     titulo: "pasaje a peru",
@@ -31,22 +33,25 @@ export class HomeComponent implements OnInit {
     this.getListEvents()
   }
 
-  // getListEvents(){
-  //   this.eventService.getListEvents().subscribe((data) => {
-  //     console.log(data)
-
-  //   })
-  // }
-
   getListEvents() {
+    this.loading = true;
     this.eventService.getListEvents().subscribe({
       next: data => {
         this.listEvents = data;
         console.log(data);
+        this.loading = false;
       },
       error: error => {
         console.error('Error al obtener los eventos:', error);
       }
     });
+  }
+
+  deleteEvent(id_event: number){
+    this.loading = true;
+    this.eventService.deleteEvent(id_event).subscribe(() => {
+      console.log(id_event);
+      this.getListEvents();
+    })
   }
 }
