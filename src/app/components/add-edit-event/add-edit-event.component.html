@@ -1,3 +1,10 @@
+<div class="alert-container">
+  @if(eventAddedSuccess){
+    <div class="alert alert-success" role="alert">
+      El evento ha sido agregado con éxito
+    </div>
+  }
+</div>
 <div class="row m-3">
   <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1">
     <div class="card bg-light mb-3">
@@ -42,6 +49,17 @@
           <div class="form-group mt-2">
             <label for="comentarios">Comentarios</label>
             <input type="text" id="comentarios" class="form-control" formControlName="comentarios" placeholder="Ingrese comentarios">
+          </div>
+          <div class="form-group mt-2">
+            <label for="viaje">Viaje *</label>
+            <select id="viaje" class="form-control" formControlName="viajeId">
+              @for (viaje of viajes; track viaje) {
+                <option [value]="viaje.id_viaje">{{ viaje.titulo }}</option>
+              }
+            </select>
+            @if (viaje.hasError('required') && viaje.touched) {
+              <div class="form-error">El viaje es requerido</div>
+            }
           </div>
           <div class="row mt-2">
             <div class="col text-center">

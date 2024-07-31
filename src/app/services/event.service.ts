@@ -17,7 +17,7 @@ export class EventService {
   }
 
   getListEvents(): Observable<Event[]> {
-    return this.http.get<{ data: Event[] }>(`${this.baseUrl}${this.eventUrl}`, { withCredentials: true }).pipe(
+    return this.http.get<{ data: Event[] }>(`${this.baseUrl}${this.eventUrl}`).pipe(
       map(response => response.data.map(event => ({
         ...event,
         fecha_inicio: new Date(event.fecha_inicio ?? ''),
@@ -30,5 +30,9 @@ export class EventService {
 
   deleteEvent(id_event: number): Observable<void>{
     return this.http.delete<void>(`${this.baseUrl}${this.eventUrl}${id_event}`)
+  }
+
+  saveEvent(event: Event): Observable<void>{
+    return this.http.post<void>(`${this.baseUrl}${this.eventUrl}`, event)
   }
 }
