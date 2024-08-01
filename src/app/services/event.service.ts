@@ -35,4 +35,23 @@ export class EventService {
   saveEvent(event: Event): Observable<void>{
     return this.http.post<void>(`${this.baseUrl}${this.eventUrl}`, event)
   }
+
+  getEvent(id_event: number): Observable<Event>{
+    return this.http.get<{ data: Event }>(`${this.baseUrl}${this.eventUrl}${id_event}`).pipe(
+      map(response => {
+        const event = response.data;
+        return {
+          ...event,
+          fecha_inicio: new Date(event.fecha_inicio ?? ''),
+          fecha_fin: new Date(event.fecha_fin ?? ''),
+          created_at: new Date(event.created_at ?? ''),
+          updated_at: new Date(event.updated_at ?? '')
+        };
+      })
+    );
+  }
+
+  updateEvent(id_event: number, event: Partial<Event>): Observable<void>{
+    return this.http.patch<void>(`${this.baseUrl}${this.eventUrl}${id_event}`, event)
+  }
 }

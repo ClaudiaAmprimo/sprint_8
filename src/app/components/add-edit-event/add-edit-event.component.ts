@@ -1,17 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { format } from 'date-fns';
 import { EventService } from '../../services/event.service';
 import { Event } from '../../interfaces/event';
 import { ViajeService } from '../../services/viaje.service';
 import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-add-edit-event',
@@ -19,12 +14,6 @@ import { AuthService } from '../../services/auth.service';
   imports: [
     RouterLink,
     ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    NgxMaterialTimepickerModule
   ],
   templateUrl: './add-edit-event.component.html',
   styleUrl: './add-edit-event.component.scss'
@@ -40,8 +29,13 @@ export class AddEditEventComponent implements OnInit {
   viaje: FormControl;
   viajes: any[] = [];
   eventAddedSuccess: boolean = false;
+  eventUpdatedSuccess: boolean = false;
+  id_event: number;
+  operacion: string = 'Agregar '
 
-  constructor(private eventService: EventService, private viajeService: ViajeService, private authService: AuthService){
+  constructor(private eventService: EventService, private viajeService: ViajeService,
+    private authService: AuthService, private route: ActivatedRoute, private router: Router,
+    private alertService: AlertService ){
     this.titulo = new FormControl('', Validators.required);
     this.ubicacion = new FormControl('', Validators.required);
     this.fechaInicio = new FormControl('', Validators.required);
@@ -59,9 +53,16 @@ export class AddEditEventComponent implements OnInit {
       comentarios: this.comentarios,
       viajeId: this.viaje
     })
+
+  this.id_event = Number(route.snapshot.paramMap.get('id'));
+  console.log(this.id_event)
   }
 
   ngOnInit() {
+    if (this.id_event != 0){
+      this.operacion = 'Editar ';
+      this.getEvent(this.id_event);
+    }
     this.loadViajes();
   }
 
@@ -83,6 +84,18 @@ export class AddEditEventComponent implements OnInit {
     return formattedDateTime;
   }
 
+  formatForDatetimeLocal(date: Date | string): string {
+    const fecha = new Date(date);
+    return [
+      fecha.getFullYear(),
+      ('0' + (fecha.getMonth() + 1)).slice(-2),
+      ('0' + fecha.getDate()).slice(-2)
+    ].join('-') + 'T' + [
+      ('0' + fecha.getHours()).slice(-2),
+      ('0' + fecha.getMinutes()).slice(-2)
+    ].join(':');
+  }
+
   onSubmit() {
     if (this.eventForm.valid) {
       const formValue = this.eventForm.value;
@@ -99,6 +112,7 @@ export class AddEditEventComponent implements OnInit {
       }
 
       const event: Event = {
+        id_event: this.id_event,
         titulo: formValue.titulo,
         ubicacion: formValue.ubicacion,
         fecha_inicio: fechaInicioFormatted,
@@ -109,25 +123,56 @@ export class AddEditEventComponent implements OnInit {
         user_id_create: userIdCreate
       };
 
-      console.log('Event:', event);
-      this.addEvent(event);
+      if(this.id_event != 0){
+        this.updateEvent(this.id_event, event);
+      } else{
+        console.log('Event:', event);
+        this.addEvent(event);
+      }
     }
   }
-
 
   addEvent(event: Event) {
     this.eventService.saveEvent(event).subscribe({
       next: () => {
         console.log("evento agregado");
         this.eventForm.reset();
-        this.eventAddedSuccess = true;
-        setTimeout(() => {
-          this.eventAddedSuccess = false;
-        }, 5000);
+        this.alertService.showAlert('El evento ha sido agregado con éxito', 'success');
+        this.router.navigate(['/']);
       },
       error: (error) => {
         console.error('Error al agregar evento:', error);
       }
+    });
+  }
+
+  updateEvent(id_event: number, event: Event) {
+    this.eventService.updateEvent(id_event, event).subscribe({
+      next: () => {
+        console.log("evento actualizado");
+        this.eventForm.reset();
+        this.alertService.showAlert('El evento ha sido actualizado con éxito', 'warning');
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.error('Error al actualizar el evento:', error);
+      }
+    });
+  }
+
+  getEvent(id_event: number) {
+    this.eventService.getEvent(id_event).subscribe((data: Event) => {
+      console.log(data);
+
+      this.eventForm.patchValue({
+        titulo: data.titulo,
+        ubicacion: data.ubicacion,
+        fechaInicio: this.formatForDatetimeLocal(data.fecha_inicio),
+        fechaFin: this.formatForDatetimeLocal(data.fecha_fin),
+        costo: data.costo,
+        comentarios: data.comentarios,
+        viajeId: data.viaje_id
+      });
     });
   }
 }
