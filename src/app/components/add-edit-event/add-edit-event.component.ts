@@ -39,7 +39,7 @@ export class AddEditEventComponent implements OnInit {
     this.titulo = new FormControl('', Validators.required);
     this.ubicacion = new FormControl('', Validators.required);
     this.fechaInicio = new FormControl('', Validators.required);
-    this.fechaFin = new FormControl('');
+    this.fechaFin = new FormControl('', Validators.required);
     this.costo = new FormControl('', Validators.required);
     this.comentarios = new FormControl('');
     this.viaje = new FormControl('', Validators.required);

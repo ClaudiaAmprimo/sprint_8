@@ -29,8 +29,11 @@
             }
           </div>
           <div class="form-group mt-2">
-            <label class="mx-2" for="fechaFin">Fecha de Fin</label>
+            <label class="mx-2" for="fechaFin">Fecha de Fin *</label>
             <input type="datetime-local" name="fechaFin" formControlName="fechaFin" placeholder="Ingrese la fecha de fin">
+            @if (fechaFin.hasError('required') && fechaFin.touched){
+              <p class="form-error">La fecha es requerida</p>
+            }
           </div>
           <div class="form-group mt-2">
             <label for="costo">Costo *</label>
