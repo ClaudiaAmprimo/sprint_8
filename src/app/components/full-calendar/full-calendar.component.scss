@@ -1,0 +1,20 @@
+::ng-deep .fc a {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+::ng-deep .fc .fc-col-header-cell.fc-day {
+  background-color: #4a5759 !important;
+}
+
+::ng-deep .fc-button {
+  background-color: #dedbd2 !important;
+  border-color: #4a5759 !important;
+  color: black !important;
+}
+
+::ng-deep .fc-button:hover {
+  background-color: #4a5759 !important;
+  border-color: #4a5759 !important;
+  color: white !important;
+}

@@ -23,6 +23,10 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.table thead th {
+  vertical-align: top !important;
+}
+
 @media (max-width: 767px) {
   .btn-sm {
     min-width: 80px;

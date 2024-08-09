@@ -22,7 +22,11 @@
           <tr>
             <th scope="col">Titulo</th>
             <th scope="col">Ubicacion</th>
-            <th scope="col">Fecha Inicio</th>
+            <th scope="col">
+              <span (click)="toggleSortOrder()" class="sort-header">
+                Fecha Inicio <span [ngClass]="sortAsc ? 'sort-asc' : 'sort-desc'"></span>
+              </span>
+            </th>
             <th scope="col">Fecha Fin</th>
             <th scope="col">Costo</th>
             <th scope="col">Comentarios</th>

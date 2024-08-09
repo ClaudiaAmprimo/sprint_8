@@ -28,6 +28,16 @@ export class EventService {
     );
   }
 
+  getCalendarEvents(): Observable<any[]> {
+    return this.getListEvents().pipe(
+      map(events => events.map(event => ({
+        title: event.titulo,
+        start: event.fecha_inicio,
+        end: event.fecha_fin
+      })))
+    );
+  }
+
   deleteEvent(id_event: number): Observable<void>{
     return this.http.delete<void>(`${this.baseUrl}${this.eventUrl}${id_event}`)
   }
