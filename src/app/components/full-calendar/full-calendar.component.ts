@@ -33,7 +33,7 @@ export class FullCalendarComponent implements OnInit{
   ngOnInit(): void {
     this.eventService.getListEvents().subscribe(events => {
       const calendarEvents = events.map(event => ({
-        title: event.titulo,
+        title: `${event.titulo} - ${event.comentarios}`,
         start: event.fecha_inicio,
         end: event.fecha_fin,
         backgroundColor: '#b0c4b1',
