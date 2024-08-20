@@ -116,7 +116,7 @@ export class AddEditEventComponent implements OnInit {
 
       const event: Event = {
         id_event: this.id_event,
-        categoria: formValue.categoria, 
+        categoria: formValue.categoria,
         titulo: formValue.titulo,
         ubicacion: formValue.ubicacion,
         fecha_inicio: fechaInicioFormatted,
@@ -170,6 +170,7 @@ export class AddEditEventComponent implements OnInit {
 
       this.eventForm.patchValue({
         titulo: data.titulo,
+        categoria: data.categoria,
         ubicacion: data.ubicacion,
         fechaInicio: this.formatForDatetimeLocal(data.fecha_inicio),
         fechaFin: this.formatForDatetimeLocal(data.fecha_fin),
