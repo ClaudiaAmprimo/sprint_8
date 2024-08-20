@@ -3,6 +3,7 @@ import { PlacesService } from '../../services/places.service';
 import { LoadingComponent } from "../loading/loading.component";
 import { MapViewComponent } from "../map-view/map-view.component";
 import { BtnMapLocationComponent } from "../btn-map-location/btn-map-location.component";
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-mapa',
@@ -11,11 +12,25 @@ import { BtnMapLocationComponent } from "../btn-map-location/btn-map-location.co
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.scss'
 })
+
 export class MapaComponent {
+  selectedCategories: string[] = ['Hospedaje', 'Transporte', 'Turismo', 'Comida'];
+
+  @ViewChild(MapViewComponent) mapViewComponent!: MapViewComponent;
+
   constructor(private placesService: PlacesService) {}
 
-  get isUserLocationReady(){
+  get isUserLocationReady() {
     return this.placesService.isUserLocationReady;
   }
 
+  onCategorySelectionChange(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    if (checkbox.checked) {
+      this.selectedCategories.push(checkbox.value);
+    } else {
+      this.selectedCategories = this.selectedCategories.filter(cat => cat !== checkbox.value);
+    }
+    this.mapViewComponent.onCategoryChange(this.selectedCategories);
+  }
 }

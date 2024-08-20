@@ -15,6 +15,18 @@
             }
           </div>
           <div class="form-group mt-2">
+            <label for="categoria">Categoría *</label>
+            <select id="categoria" class="form-control" formControlName="categoria">
+              <option value="Hospedaje">Hospedaje</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Turismo">Turismo</option>
+              <option value="Comida">Comida</option>
+            </select>
+            @if (categoria.hasError('required') && categoria.touched){
+              <p class="form-error">La categoría es requerida</p>
+            }
+          </div>
+          <div class="form-group mt-2">
             <label for="ubicacion">Ubicación *</label>
             <input type="text" id="ubicacion" class="form-control" formControlName="ubicacion" placeholder="Ingrese la ubicación">
             @if (ubicacion.hasError('required') && ubicacion.touched){

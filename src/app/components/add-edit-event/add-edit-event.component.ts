@@ -21,6 +21,7 @@ import { AlertService } from '../../services/alert.service';
 export class AddEditEventComponent implements OnInit {
   eventForm: FormGroup;
   titulo: FormControl;
+  categoria: FormControl;
   ubicacion: FormControl;
   fechaInicio: FormControl;
   fechaFin: FormControl;
@@ -37,6 +38,7 @@ export class AddEditEventComponent implements OnInit {
     private authService: AuthService, private route: ActivatedRoute, private router: Router,
     private alertService: AlertService ){
     this.titulo = new FormControl('', Validators.required);
+    this.categoria = new FormControl('', Validators.required);
     this.ubicacion = new FormControl('', Validators.required);
     this.fechaInicio = new FormControl('', Validators.required);
     this.fechaFin = new FormControl('', Validators.required);
@@ -46,6 +48,7 @@ export class AddEditEventComponent implements OnInit {
 
     this.eventForm = new FormGroup({
       titulo: this.titulo,
+      categoria: this.categoria,
       ubicacion: this.ubicacion,
       fechaInicio: this.fechaInicio,
       fechaFin: this.fechaFin,
@@ -113,6 +116,7 @@ export class AddEditEventComponent implements OnInit {
 
       const event: Event = {
         id_event: this.id_event,
+        categoria: formValue.categoria, 
         titulo: formValue.titulo,
         ubicacion: formValue.ubicacion,
         fecha_inicio: fechaInicioFormatted,

@@ -9,12 +9,13 @@ import { Event } from '../../interfaces/event';
 @Component({
   selector: 'app-map-view',
   standalone: true,
-  imports: [],
   templateUrl: './map-view.component.html',
   styleUrls: ['./map-view.component.scss']
 })
 export class MapViewComponent implements AfterViewInit {
   events: Event[] = [];
+  filteredEvents: Event[] = [];
+  selectedCategories: string[] = ['Hospedaje', 'Transporte', 'Turismo', 'Comida'];
 
   constructor(
     private http: HttpClient,
@@ -29,8 +30,11 @@ export class MapViewComponent implements AfterViewInit {
       return;
     }
 
-    console.log("User location:", this.placesService.useLocation);
+    this.initializeMap();
+    this.loadEvents();
+  }
 
+  initializeMap() {
     this.http.get<{ token: string }>('http://localhost:3000/mapbox/token').subscribe({
       next: (response) => {
         mapboxgl.accessToken = response.token;
@@ -42,22 +46,17 @@ export class MapViewComponent implements AfterViewInit {
           zoom: 14
         });
 
-        const popup = new Popup()
-          .setHTML(`
-            <h6>Aquí estoy</h6>
-            <span>Estoy en este lugar del mundo</span>
-          `);
+        const popup = new Popup().setHTML(`
+          <h6>Aquí estoy</h6>
+          <span>Estoy en este lugar del mundo</span>
+        `);
 
         new Marker({ color: 'red' })
           .setLngLat(this.placesService.useLocation as [number, number])
           .setPopup(popup)
           .addTo(map);
 
-          this.mapService.setMap(map);
-          this.eventService.getListEvents().subscribe(events => {
-            this.events = events;
-            this.addEventMarkers(map);
-          });
+        this.mapService.setMap(map);
       },
       error: (err) => {
         console.error('Error al obtener el token de Mapbox:', err);
@@ -65,53 +64,75 @@ export class MapViewComponent implements AfterViewInit {
     });
   }
 
-  private addEventMarkers(map: mapboxgl.Map) {
-    const bounds = new LngLatBounds();
-    let pendingRequests = this.events.length;
+  loadEvents() {
+    this.eventService.getListEvents().subscribe(events => {
+      this.events = events;
+      this.applyFilters();
+    });
+  }
 
-    this.events.forEach(event => {
+  applyFilters() {
+    this.filteredEvents = this.events.filter(event =>
+      this.selectedCategories.includes(event.categoria)
+    );
+    this.addEventMarkers();
+  }
+
+  addEventMarkers() {
+    if (!this.mapService.isMapReady) return;
+
+    const bounds = new LngLatBounds();
+
+    this.filteredEvents.forEach(event => {
       if (event.ubicacion) {
         this.mapService.geocodeLocation(event.ubicacion).subscribe({
           next: ([lng, lat]) => {
-            const popup = new Popup()
-              .setHTML(`
-                <h6>${event.titulo}</h6>
-                <span>${event.ubicacion}</span>
-              `);
+            const popup = new Popup().setHTML(`
+              <h6>${event.titulo}</h6>
+              <span>${event.ubicacion}</span>
+            `);
 
-            new Marker({ color: 'blue' })
-              .setLngLat([lng, lat])
-              .setPopup(popup)
-              .addTo(map);
+            const map = this.mapService.getMap();
+            if (map) {
+              new Marker({ color: 'blue' })
+                .setLngLat([lng, lat])
+                .setPopup(popup)
+                .addTo(map);
 
-            bounds.extend([lng, lat]);
+              bounds.extend([lng, lat]);
+            }
           },
           error: (err) => {
             console.error(`Invalid coordinates for event ${event.titulo}: ${event.ubicacion}`, err);
           },
           complete: () => {
-            pendingRequests--;
-
-            if (pendingRequests === 0) {
-              if (bounds.isEmpty()) {
-                console.warn("No valid locations found to fit bounds");
-              } else {
-                map.fitBounds(bounds, { padding: 50 });
-              }
+            const map = this.mapService.getMap();
+            if (map && !bounds.isEmpty()) {
+              map.fitBounds(bounds, { padding: 50 });
             }
           }
         });
-      } else {
-        pendingRequests--;
-
-        if (pendingRequests === 0) {
-          if (bounds.isEmpty()) {
-            console.warn("No valid locations found to fit bounds");
-          } else {
-            map.fitBounds(bounds, { padding: 50 });
-          }
-        }
       }
     });
+
+    const map = this.mapService.getMap();
+    if (map && !bounds.isEmpty()) {
+      map.fitBounds(bounds, { padding: 50 });
+    }
+  }
+
+  onCategorySelectionChange(event: any) {
+    const checkbox = event.target as HTMLInputElement;
+    if (checkbox.checked) {
+      this.selectedCategories.push(checkbox.value);
+    } else {
+      this.selectedCategories = this.selectedCategories.filter(cat => cat !== checkbox.value);
+    }
+    this.applyFilters();
+  }
+
+  onCategoryChange(selectedCategories: string[]) {
+    this.selectedCategories = selectedCategories;
+    this.applyFilters();
   }
 }

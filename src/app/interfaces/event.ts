@@ -14,4 +14,5 @@ export interface Event {
   user_id_paid?: number;
   created_at?: string | Date;
   updated_at?: string | Date;
+  categoria: 'Hospedaje' | 'Transporte' | 'Turismo' | 'Comida'; 
 }

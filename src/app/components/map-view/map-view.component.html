@@ -1,2 +1,9 @@
-<div id="map" class="map-container">
+<div class="filter-container">
+  @for (category of ['Hospedaje', 'Transporte', 'Turismo', 'Comida']; track category) {
+    <label>
+      <input type="checkbox" [value]="category" [checked]="selectedCategories.includes(category)" (change)="onCategorySelectionChange($event)">
+      {{ category }}
+    </label>
+  }
 </div>
+<div id="map" class="map-container"></div>

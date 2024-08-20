@@ -13,13 +13,17 @@ export class MapService {
   private baseUrl: string = environment.endpoint;
 
   constructor(private http: HttpClient) { }
-  
+
   get isMapReady(){
     return !!this.map
   }
 
   setMap(map: Map){
     this.map = map;
+  }
+
+  getMap(): Map | undefined {  
+    return this.map;
   }
 
   flyTo(coords: LngLatLike){
@@ -44,6 +48,4 @@ export class MapService {
       })
     );
   }
-
-
 }
