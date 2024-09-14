@@ -6,22 +6,33 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## To clone the repository
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+git clone https://github.com/ClaudiaAmprimo/sprint_8.git
 
-## Build
+- Ejercicio 1:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Crear un proyecto con Angular que tenga un menú superior con los Links:
 
-## Running unit tests
+Home
+Mapa
+FullCalendar
+Gráficos (Chartjs)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- Ejercicio 2:
 
-## Running end-to-end tests
+Crear una API con Node.js +  MySQL. Crear un CRUD que consuma datos de la API.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- Ejercicio 3:
 
-## Further help
+Mapa : almacena un listado de ubicaciones con latitud y longitud. Realizado con MapBox.
+FullCalendar : mostrar un calendario donde puedan añadir y eliminar un evento.
+Gráficos (Chartjs) : mostrar 2 tipos de gráficos, por ejemplo: uno de barras y un lineal.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Ejercicio 4:
+
+Crear varias categorías de marcadores y generar un filtro (listado de checkbox) para el mapa.
+
+- Ejercicio 5:
+
+Permitir que el calendario pueda editar eventos desde un modal. Los datos actualizados deben enviarse también a la API.
