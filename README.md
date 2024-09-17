@@ -4,11 +4,30 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## To clone the repository
 
 git clone https://github.com/ClaudiaAmprimo/sprint_8.git
+
+Para visualizar los datos debe estar corriendo el backend.
+
+Verifica que tienes `node -v` y `npm -v` si no los tienes instalalos de la pagina oficial: https://nodejs.org/en
+
+Verifica si tienes instalado el Angular CLI ejecutando: ng version
+
+Si el comando no es reconocido, instala Angular CLI globalmente ejecutando:
+npm install -g @angular/cli
+
+Instalar dependencias del proyecto: npm install
+
+Ejecutar el proyecto con : ng serve -o
+Se abre en el puerto 4200.
+
+Una vez dentro hacer login con el email de prueba:
+usuario: laura@gmail.com
+password: ismael123
+
 
 - Ejercicio 1:
 
